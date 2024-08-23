@@ -49,19 +49,22 @@
 </body>
 
 <script>
-  const pusher  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'eu'});
+  const pusher  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
   const channel = pusher.subscribe('public');
 
   //Receive messages
   channel.bind('chat', function (data) {
-    $.post("/receive", {
-      _token:  '{{csrf_token()}}',
-      message: data.message,
-    })
-     .done(function (res) {
-       $(".messages > .message").last().after(res);
-       $(document).scrollTop($(document).height());
-     });
+
+    console.log(data);
+
+    // $.post("/receive", {
+    //   _token:  '{{csrf_token()}}',
+    //   message: data.message,
+    // })
+    //  .done(function (res) {
+    //    $(".messages > .message").last().after(res);
+    //    $(document).scrollTop($(document).height());
+    //  });
   });
 
   //Broadcast messages
@@ -69,14 +72,14 @@
     event.preventDefault();
 
     $.ajax({
-      url:     "/broadcast",
+      url: "/broadcast",
       method:  'POST',
       headers: {
         'X-Socket-Id': pusher.connection.socket_id
       },
       data:    {
         _token:  '{{csrf_token()}}',
-        message: $("form #message").val(),
+        message: [1,2,3],
       }
     }).done(function (res) {
       $(".messages > .message").last().after(res);

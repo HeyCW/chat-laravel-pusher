@@ -25,9 +25,10 @@ class PusherController extends Controller
      */
     public function broadcast(Request $request): Factory|View|Application
     {
+        
         broadcast(new PusherBroadcast($request->get('message')))->toOthers();
 
-        return view('broadcast', ['message' => $request->get('message')]);
+        return view('broadcast', ['message' => 'halo']);
     }
 
     /**
